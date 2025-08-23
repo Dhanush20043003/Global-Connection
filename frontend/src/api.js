@@ -3,7 +3,7 @@
 import axios from "axios";
 
 const api = axios.create({
-  baseURL: import.meta.env.VITE_BACKEND_URL || "http://localhost:5000", // Dynamic backend URL
+  baseURL: import.meta.env.VITE_BACKEND_URL || "https://global-connection-1.onrender.com", // Dynamic backend URL
 });
 
 // Axios Interceptor: Automatically attach JWT for every request
