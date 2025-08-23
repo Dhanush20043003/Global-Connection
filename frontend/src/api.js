@@ -3,7 +3,7 @@
 import axios from "axios";
 
 const api = axios.create({
-  baseURL: "http://localhost:5000", // Your backend URL
+  baseURL: import.meta.env.VITE_BACKEND_URL || "http://localhost:5000", // Dynamic backend URL
 });
 
 // Axios Interceptor: Automatically attach JWT for every request
@@ -14,7 +14,6 @@ api.interceptors.request.use((config) => {
   }
   return config;
 }, (error) => {
-  // Do something with request error
   return Promise.reject(error);
 });
 
@@ -39,7 +38,7 @@ export const loginUser = async (credentials) => {
   }
 };
 
-// User Profile API functions (mounted at /api/users/profile in backend)
+// User Profile API functions
 export const createProfile = async (name, formData) => {
   try {
     const response = await api.post(`/api/users/profile/${name}`, formData, {
@@ -86,9 +85,7 @@ export const updateStatus = async (profileId, newStatus) => {
 
 export const sendConnectionRequest = async (receiverId, senderId) => {
   try {
-    // Backend expects sender's ID in params, receiver's ID in body as 'profileId'
-    // const response = await api.post(`/api/user/profile/connection/${senderId}`, { profileId: receiverId });
-    const res = await fetch(`http://localhost:5000/api/user/profile/request/connection/${senderId}`, {
+    const res = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/user/profile/request/connection/${senderId}`, {
       method: 'POST',
       headers: {
         'Content-Type':'application/json',
@@ -100,7 +97,6 @@ export const sendConnectionRequest = async (receiverId, senderId) => {
 
     if (res.ok) {
       const data = await res.json();
-      // alert(data.message);
       return data;
     }
   } catch (error) {
@@ -111,7 +107,6 @@ export const sendConnectionRequest = async (receiverId, senderId) => {
 
 export const acceptConnection = async (accepterProfileId, requesterId) => {
   try {
-    // Backend expects accepter's ID in params, requester's ID in body as 'id'
     const response = await api.post(`/api/users/connection/${accepterProfileId}`, { id: requesterId });
     return response.data;
   } catch (error) {
@@ -120,8 +115,7 @@ export const acceptConnection = async (accepterProfileId, requesterId) => {
   }
 };
 
-
-// Post API functions (mounted at /api/posts in backend)
+// Post API functions
 export const createPost = async (userId, formData) => {
   try {
     const response = await api.post(`/api/posts/${userId}`, formData, {
@@ -138,7 +132,6 @@ export const createPost = async (userId, formData) => {
 
 export const fetchPosts = async () => {
   try {
-    // Backend PostRouter has: postRouter.get('/getAll', getAllPosts);
     const response = await api.get('/api/posts/');
     return response.data;
   } catch (error) {
@@ -170,13 +163,13 @@ export const deletePost = async (postId) => {
 export const likePost = async (postId) => {
   try {
     const token = localStorage.getItem('token');
-    const response = await fetch(`http://localhost:5000/api/posts/like/${postId}`, {
+    const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/posts/like/${postId}`, {
       method: 'GET',
       headers: {
         'Content-Type':'application/json',
         'Authorization':`Bearer ${token}`
       }
-    })
+    });
 
     const data = await response.json();
     if(response.ok) {
@@ -191,7 +184,7 @@ export const likePost = async (postId) => {
   }
 };
 
-// Comment API functions (mounted at /api/comment in backend)
+// Comment API functions
 export const createComment = async (writerId, postId, commentData) => {
   try {
     const response = await api.post(`/api/comment/${writerId}/${postId}`, commentData);
@@ -202,24 +195,22 @@ export const createComment = async (writerId, postId, commentData) => {
   }
 };
 
-// Fetch all comments for a specific post
 export const getCommentsByPostId = async (postId) => {
   try {
     const response = await api.get(`/api/comment/${postId}`);
-    return response.data; // should return an array of comments
+    return response.data;
   } catch (error) {
     console.error('Error fetching comments:', error);
     throw error;
   }
 };
 
-
-// Job API functions (mounted at /api/jobs in backend)
+// Job API functions
 export const postJob = async (userId, formData) => {
   try {
     const response = await api.post(`/api/jobs/post/${userId}`, formData, {
       headers: {
-        'Content-Type': 'multipart/form-data', // Assuming job posting includes image or similar
+        'Content-Type': 'multipart/form-data',
       },
     });
     return response.data;
@@ -251,10 +242,8 @@ export const getJobById = async (jobId) => {
 
 export const applyForJob = async (jobId) => {
   try {
-    // const response = await api.get(`/api/jobs/apply/${jobId}`, applicationData);
-    // return response.data;
     const token = localStorage.getItem('token');
-    const res = await fetch(`http://localhost:5000/api/jobs/apply/${jobId}`, {
+    const res = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/jobs/apply/${jobId}`, {
       method: 'GET',
       headers: {
         'Content-Type':'application/json',
@@ -263,8 +252,6 @@ export const applyForJob = async (jobId) => {
     });
 
     const data = await res.json();
-    console.log('job err',data);
-
     if(res.ok) {
       return data;
     } else {
@@ -278,8 +265,6 @@ export const applyForJob = async (jobId) => {
 
 export const searchJobs = async (query) => {
   try {
-    // The backend search route is '/api/jobs/search'.
-    // If it expects query parameters, use them like: `/api/jobs/search?q=${query}`
     const response = await api.get(`/api/jobs/search?${new URLSearchParams(query).toString()}`);
     return response.data;
   } catch (error) {
@@ -287,6 +272,5 @@ export const searchJobs = async (query) => {
     throw error;
   }
 };
-
 
 export default api;
