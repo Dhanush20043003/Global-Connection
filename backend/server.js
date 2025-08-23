@@ -14,7 +14,7 @@ const startServer = async () => {
 
   // Apply CORS for API routes
   app.use(cors({
-    origin: process.env.FRONTEND_URL || '*', // e.g., https://your-frontend.vercel.app
+    origin: process.env.FRONTEND_URL || '*', // e.g., https://global-connection-1.vercel.app/
     methods: ['GET', 'POST', 'PUT', 'DELETE'],
     credentials: true
   }));
