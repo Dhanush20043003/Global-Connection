@@ -22,7 +22,7 @@ export default function EditProfile() {
     (async () => {
       try {
         const token = localStorage.getItem("token");
-        const res = await fetch("http://localhost:5000/api/user/profile", {
+        const res = await fetch(`${process.env.REACT_APP_API_URL}/api/user/profile`, {
           method: "GET",
           headers: {
             "Content-Type": "application/json",
@@ -48,7 +48,7 @@ export default function EditProfile() {
         if (profile.profilePic) {
           setPreview(profile.profilePic.startsWith("http")
             ? profile.profilePic
-            : `http://localhost:5000/${profile.profilePic}`);
+            : `${process.env.REACT_APP_API_URL}/${profile.profilePic}`);
         }
       } catch (err) {
         console.error("Profile fetch error:", err);
@@ -74,7 +74,7 @@ export default function EditProfile() {
         formData.append("ProfileImg", profilePic);
 
         try {
-          const res = await fetch(`http://localhost:5000/api/user/profile/${profileId}`, {
+          const res = await fetch(`${process.env.REACT_APP_API_URL}/api/user/profile/${profileId}`, {
             method: 'PUT',
             body: formData
           });

@@ -10,7 +10,7 @@ export default function AppliedJobCard({ id, isSearchResult }) {
   useEffect(() => {
     const fetchJob = async () => {
       try {
-        const res = await fetch(`http://localhost:5000/api/jobs/get/${id}`, {
+        const res = await fetch(`${process.env.REACT_APP_API_URL}/api/jobs/get/${id}`, {
           method: 'GET',
           headers: { 'Accept': 'application/json' }
         });

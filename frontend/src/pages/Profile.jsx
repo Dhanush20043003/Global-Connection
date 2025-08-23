@@ -21,7 +21,7 @@ export default function Profile() {
     const fetchUserProfile = async() => {
       const token = localStorage.getItem('token');
       try {
-        const res = await fetch('http://localhost:5000/api/user/profile', {
+        const res = await fetch(`${process.env.REACT_APP_API_URL}/api/user/profile`, {
           method: 'GET',
           headers : {
             "Content-Type" : 'application/json',

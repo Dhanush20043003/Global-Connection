@@ -27,7 +27,7 @@ export default function OnboardingWizard() {
       try {
         const decodedToken = jwtDecode(token);
         const fetchName = async () => {
-          const res = await fetch(`http://localhost:5000/api/users`, {
+          const res = await fetch(`${process.env.REACT_APP_API_URL}/api/users`, {
             method: 'GET',
             headers: {
               'Content-Type' : 'application/json',
@@ -108,7 +108,7 @@ export default function OnboardingWizard() {
       // Backend createProfile route: POST /api/users/profile/:name
       try {
         const token = localStorage.getItem('token');
-        const res = await fetch(`http://localhost:5000/api/user/profile/${profileName}`, {
+        const res = await fetch(`${process.env.REACT_APP_API_URL}/api/user/profile/${profileName}`, {
           method: 'POST',
           headers: {
             'Authorization' : `Bearer ${token}`

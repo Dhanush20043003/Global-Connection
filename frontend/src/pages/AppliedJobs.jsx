@@ -22,7 +22,7 @@ const fetchAllJobs = async () => {
 
     // const data = await getAllJobs(); // Use the API function
     const token = localStorage.getItem('token');
-    const res = await fetch('http://localhost:5000/api/user/profile',{
+    const res = await fetch(`${process.env.REACT_APP_API_URL}/api/user/profile`, {
         method: 'GET',
         headers: {
             'Accept' : 'application/json',

@@ -22,7 +22,7 @@ const SingleConnection2 = (prop) => {
     useEffect(() => {
         const fetchData = async() => {
             try {
-                const res = await fetch(`http://localhost:5000/api/user/profile/${conn}`, {
+                const res = await fetch(`${process.env.REACT_APP_API_URL}/api/user/profile/${conn}`, {
                     method: 'GET',
                     headers: {
                         'Content-Type' : 'application/json'

@@ -11,7 +11,7 @@ const SingleComment = (prop) => {
         console.log('comment', comment);
         const fetchFrom = async() => {
             try {
-                const res = await fetch(`http://localhost:5000/api/user/profile/${comment.from}`, {
+                const res = await fetch(`${process.env.REACT_APP_API_URL}/api/user/profile/${comment.from}`, {
                     method: 'GET',
                     headers: {
                         'Content-Type':'application/json'
