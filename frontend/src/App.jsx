@@ -39,7 +39,7 @@ function App() {
         // console.log("Decoded token payload:", payload, "Resolved userId:", userId);
         const fetchUserProfileId = async() => {
           try {
-          const response = await fetch('http://localhost:5000/api/user/profile', {
+          const response = await fetch('${API_URL}/api/user/profile', {
             method: 'GET',
             headers: {
               'Content-Type':'application/json',
